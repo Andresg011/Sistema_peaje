@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 peaje = Peaje()
 
-# 🔎 VALIDACIÓN DE PLACAS COLOMBIA
+#  VALIDACIÓN DE PLACAS COLOMBIA
 def validar_placa(tipo, placa):
 
     placa = placa.strip().upper()
@@ -38,7 +38,7 @@ def inicio():
 
         vehiculo = None
 
-        # 🔴 VALIDACIÓN GENERAL
+        #  VALIDACIÓN GENERAL
         if not placa or not tipo:
             mensaje = "Error: Debe completar todos los campos"
 
@@ -77,7 +77,7 @@ def inicio():
                     else:
                         vehiculo = TractoCamion(placa, ejes)
 
-            # 🧠 REGISTRO FINAL DEL VEHÍCULO
+            # REGISTRO FINAL DEL VEHÍCULO
             if vehiculo:
                 peaje.agregar_vehiculo(vehiculo)
                 mensaje = f"Vehículo registrado correctamente. Valor: ${vehiculo.calcular_tarifa()}"
