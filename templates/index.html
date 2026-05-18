@@ -7,22 +7,18 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-        content="Sistema de registro y control para peajes">
+    <meta name="description" content="Sistema de registro y control para peajes">
 
     <title>Peaje X</title>
 
     <!-- CSS -->
-    <link rel="stylesheet"
-        href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 
     <!-- ICONOS -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- FAVICON -->
-    <link rel="icon"
-        href="{{ url_for('static', filename='images/logo1.png') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo1.png') }}">
 
 </head>
 
@@ -32,18 +28,11 @@
     <header>
 
         <h1>
-
             <i class="fa-solid fa-road"></i>
-
             Sistema de Control Peaje X
-
         </h1>
 
-        <p>
-
-            Transformando el tráfico en información estratégica
-
-        </p>
+        <p>Transformando el tráfico en información estratégica</p>
 
     </header>
 
@@ -51,51 +40,28 @@
     <section class="formulario">
 
         <h2>
-
             <i class="fa-solid fa-car"></i>
-
             Registrar Vehículo
-
         </h2>
 
         <form method="POST">
 
-            <!-- PLACA -->
-            <input
-                type="text"
-                name="placa"
-                placeholder="Ingrese la placa"
-                required
-            >
+            <input type="text" name="placa" placeholder="Ingrese la placa" required>
 
-            <!-- TIPO -->
             <select name="tipo" required>
 
                 <option value="Moto">Moto</option>
-
                 <option value="Carro">Carro</option>
-
                 <option value="Camion">Camión</option>
-
                 <option value="TractoCamion">Tractocamión</option>
 
             </select>
 
-            <!-- EJES -->
-            <input
-                type="number"
-                name="ejes"
-                placeholder="Cantidad de ejes"
-                min="1"
-            >
+            <input type="number" name="ejes" placeholder="Cantidad de ejes" min="1">
 
-            <!-- BOTON -->
             <button type="submit">
-
                 <i class="fa-solid fa-plus"></i>
-
                 Registrar
-
             </button>
 
         </form>
@@ -106,9 +72,7 @@
     {% if mensaje %}
 
     <section class="mensaje">
-
         <h3>{{ mensaje }}</h3>
-
     </section>
 
     {% endif %}
@@ -117,28 +81,23 @@
     <section class="mensaje">
 
         <h2>
-
             <i class="fa-solid fa-money-bill-wave"></i>
-
-            Total recaudado:
-            ${{ total }}
-
+            Total recaudado: ${{ total }}
         </h2>
 
     </section>
 
     <!-- TOTAL VEHÍCULOS -->
-<section class="mensaje">
+    <section class="mensaje">
 
-    <h2>
-        <i class="fa-solid fa-car"></i>
-        Total vehículos:
-        {{ total_vehiculos }}
-    </h2>
+        <h2>
+            <i class="fa-solid fa-car"></i>
+            Total vehículos: {{ total_vehiculos }}
+        </h2>
 
-</section>
+    </section>
 
-    <!-- VEHICULOS -->
+    <!-- VEHÍCULOS -->
     <section class="contenedor">
 
         {% for vehiculo in vehiculos %}
@@ -146,66 +105,25 @@
         <div class="card">
 
             <h3>
-
                 <i class="fa-solid fa-car-side"></i>
-
-                {{ vehiculo._tipo_vehiculo }}
-
+                {{ vehiculo.__class__.__name__ }}
             </h3>
 
-            <p>
+            <p><strong>Placa:</strong> {{ vehiculo._placa }}</p>
 
-                <strong>Placa:</strong>
+            <p><strong>Categoría:</strong> {{ vehiculo._categoria }}</p>
 
-                {{ vehiculo._placa }}
+            {% if vehiculo.__class__.__name__ in ["Camion", "TractoCamion"] %}
 
-            </p>
-
-            <p>
-
-                <strong>Categoría:</strong>
-
-                {{ vehiculo._categoria }}
-
-            </p>
-
-            <!-- SOLO CAMIONES -->
-            {% if vehiculo._tipo_vehiculo == "Camión"
-            or vehiculo._tipo_vehiculo == "Tractocamión" %}
-
-            <p>
-
-                <strong>Ejes:</strong>
-
-                {{ vehiculo._ejes }}
-
-            </p>
+            <p><strong>Ejes:</strong> {{ vehiculo._ejes }}</p>
 
             {% endif %}
 
-            <p>
+            <p><strong>Fecha:</strong> {{ vehiculo._fecha }}</p>
 
-                <strong>Fecha:</strong>
+            <p><strong>Hora:</strong> {{ vehiculo._hora }}</p>
 
-                {{ vehiculo._fecha }}
-
-            </p>
-
-            <p>
-
-                <strong>Hora:</strong>
-
-                {{ vehiculo._hora }}
-
-            </p>
-
-            <p>
-
-                <strong>Valor pagado:</strong>
-
-                ${{ vehiculo.calcular_tarifa() }}
-
-            </p>
+            <p><strong>Valor pagado:</strong> ${{ vehiculo.calcular_tarifa() }}</p>
 
         </div>
 

@@ -38,7 +38,7 @@ def inicio():
 
         vehiculo = None
 
-        #  VALIDACIÓN GENERAL
+        # 🔴 VALIDACIÓN GENERAL
         if not placa or not tipo:
             mensaje = "Error: Debe completar todos los campos"
 
@@ -77,9 +77,10 @@ def inicio():
                     else:
                         vehiculo = TractoCamion(placa, ejes)
 
+            # 🧠 REGISTRO FINAL DEL VEHÍCULO
             if vehiculo:
                 peaje.agregar_vehiculo(vehiculo)
-                mensaje = "Vehículo registrado correctamente"
+                mensaje = f"Vehículo registrado correctamente. Valor: ${vehiculo.calcular_tarifa()}"
 
     return render_template(
         "index.html",
