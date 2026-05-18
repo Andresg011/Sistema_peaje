@@ -2,17 +2,15 @@ from datetime import datetime
 
 class Vehiculo:
 
-    # CONSTRUCTOR
     def __init__(self, placa, tipo_vehiculo, categoria):
 
-        # ENCAPSULAMIENTO
+        # 🔒 Encapsulamiento
         self._placa = placa
         self._tipo_vehiculo = tipo_vehiculo
         self._categoria = categoria
 
-        # FECHA Y HORA AUTOMÁTICA
+        # 🕒 Registro automático
         ahora = datetime.now()
-
         self._fecha = ahora.strftime("%d/%m/%Y")
         self._hora = ahora.strftime("%H:%M:%S")
 
@@ -34,21 +32,19 @@ class Vehiculo:
 
     # SETTER
     def cambiar_placa(self, nueva_placa):
-        self._placa = nueva_placa
+        self._placa = nueva_placa.upper()
 
-    # POLIMORFISMO
-    # Este método será sobrescrito por las clases hijas
+    # 🎭 POLIMORFISMO
     def calcular_tarifa(self):
         return 0
 
-    # MOSTRAR INFORMACIÓN
+    # 📄 INFO
     def mostrar_informacion(self):
-
         return f"""
-        Tipo: {self._tipo_vehiculo}
-        Placa: {self._placa}
-        Categoría: {self._categoria}
-        Fecha: {self._fecha}
-        Hora: {self._hora}
-        Tarifa: ${self.calcular_tarifa()}
-        """
+Tipo: {self._tipo_vehiculo}
+Placa: {self._placa}
+Categoría: {self._categoria}
+Fecha: {self._fecha}
+Hora: {self._hora}
+Tarifa: ${self.calcular_tarifa()}
+"""

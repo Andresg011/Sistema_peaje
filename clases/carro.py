@@ -5,11 +5,10 @@ class Carro(Vehiculo):
     def __init__(self, placa):
 
         super().__init__(
-            placa,
+            placa.upper(),
             "Carro",
             "Categoría 2"
         )
 
-    # POLIMORFISMO
     def calcular_tarifa(self):
         return 12000

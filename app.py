@@ -11,14 +11,13 @@ app = Flask(__name__)
 
 peaje = Peaje()
 
-
-# VALIDACIÓN SEGURA
+# 🔎 VALIDACIÓN DE PLACAS COLOMBIA
 def validar_placa(tipo, placa):
 
-    placa = placa.strip().upper()  # evita espacios y errores
+    placa = placa.strip().upper()
 
     if tipo == "Moto":
-        return re.fullmatch(r"[A-Z]{3}[0-9]{2}", placa)
+        return re.fullmatch(r"[A-Z]{3}[0-9]{2}[A-Z]?", placa)
 
     elif tipo in ["Carro", "Camion", "TractoCamion"]:
         return re.fullmatch(r"[A-Z]{3}[0-9]{3}", placa)
@@ -33,17 +32,18 @@ def inicio():
 
     if request.method == "POST":
 
-        placa = request.form["placa"]
-        tipo = request.form["tipo"]
+        placa = request.form.get("placa", "").strip().upper()
+        tipo = request.form.get("tipo")
         ejes = request.form.get("ejes")
-
-        placa = placa.strip().upper()
 
         vehiculo = None
 
-        # VALIDAR PLACA
-        if not validar_placa(tipo, placa):
-            mensaje = "❌ Placa inválida para el tipo de vehículo"
+        #  VALIDACIÓN GENERAL
+        if not placa or not tipo:
+            mensaje = "Error: Debe completar todos los campos"
+
+        elif not validar_placa(tipo, placa):
+            mensaje = "Error: Placa inválida para el tipo de vehículo"
 
         else:
 
@@ -56,25 +56,36 @@ def inicio():
             elif tipo == "Camion":
 
                 if not ejes or not ejes.isdigit():
-                    mensaje = "❌ Camión requiere cantidad de ejes"
+                    mensaje = "Error: Camión requiere número de ejes"
                 else:
-                    vehiculo = Camion(placa, int(ejes))
+                    ejes = int(ejes)
+
+                    if ejes < 2 or ejes > 10:
+                        mensaje = "Error: Número de ejes inválido"
+                    else:
+                        vehiculo = Camion(placa, ejes)
 
             elif tipo == "TractoCamion":
 
                 if not ejes or not ejes.isdigit():
-                    mensaje = "❌ Tractocamión requiere cantidad de ejes"
+                    mensaje = "Error: Tractocamión requiere número de ejes"
                 else:
-                    vehiculo = TractoCamion(placa, int(ejes))
+                    ejes = int(ejes)
+
+                    if ejes < 2 or ejes > 12:
+                        mensaje = "Error: Número de ejes inválido"
+                    else:
+                        vehiculo = TractoCamion(placa, ejes)
 
             if vehiculo:
                 peaje.agregar_vehiculo(vehiculo)
-                mensaje = "✔ Vehículo registrado correctamente"
+                mensaje = "Vehículo registrado correctamente"
 
     return render_template(
         "index.html",
         vehiculos=peaje.obtener_vehiculos(),
         total=peaje.calcular_total_recaudado(),
+        total_vehiculos=peaje.contar_vehiculos(),
         mensaje=mensaje
     )
 
