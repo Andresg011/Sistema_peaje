@@ -1,42 +1,207 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sistema de registro y control para peajes">
 
-    <!-- Conexion con estilos css-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <meta name="description"
+        content="Sistema de registro y control para peajes">
 
-    <!-- Conexion librería de iconos-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Peaje X</title>
 
-    <title>Peajes</title>
+    <!-- CSS -->
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='styles/style.css') }}">
 
-    <link rel="icon" href="{{url_for('static', filename='images/logo1.png')}}">
+    <!-- ICONOS -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- FAVICON -->
+    <link rel="icon"
+        href="{{ url_for('static', filename='images/logo1.png') }}">
 
 </head>
+
 <body>
-<header>
-    <h1>Sistema de control Peaje X</h1>
-    <p>Transformando el tráfico en información estratégica </p>
-</header>
 
-<nav>
-    <h1>Objetivos</h1>
-    <p>Crear una app web utilizando python</p>
-    <p>Aplicar conocimientos de Programación orientada a objetos</p>
-    <h2>Lista de clases</h2>
-    <p>vehiculo</p>
-    <p>moto</p>
-    <p>carro</p>
-    <p>camión</p>
-    <p>tractocamión</p>
-    <p>peaje</p>
-    <p>pago</p>
+    <!-- HEADER -->
+    <header>
 
-    
-</nav>
-    
+        <h1>
+
+            <i class="fa-solid fa-road"></i>
+
+            Sistema de Control Peaje X
+
+        </h1>
+
+        <p>
+
+            Transformando el tráfico en información estratégica
+
+        </p>
+
+    </header>
+
+    <!-- FORMULARIO -->
+    <section class="formulario">
+
+        <h2>
+
+            <i class="fa-solid fa-car"></i>
+
+            Registrar Vehículo
+
+        </h2>
+
+        <form method="POST">
+
+            <!-- PLACA -->
+            <input
+                type="text"
+                name="placa"
+                placeholder="Ingrese la placa"
+                required
+            >
+
+            <!-- TIPO -->
+            <select name="tipo" required>
+
+                <option value="Moto">Moto</option>
+
+                <option value="Carro">Carro</option>
+
+                <option value="Camion">Camión</option>
+
+                <option value="TractoCamion">Tractocamión</option>
+
+            </select>
+
+            <!-- EJES -->
+            <input
+                type="number"
+                name="ejes"
+                placeholder="Cantidad de ejes"
+                min="1"
+            >
+
+            <!-- BOTON -->
+            <button type="submit">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Registrar
+
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- MENSAJE -->
+    {% if mensaje %}
+
+    <section class="mensaje">
+
+        <h3>{{ mensaje }}</h3>
+
+    </section>
+
+    {% endif %}
+
+    <!-- TOTAL RECAUDADO -->
+    <section class="mensaje">
+
+        <h2>
+
+            <i class="fa-solid fa-money-bill-wave"></i>
+
+            Total recaudado:
+            ${{ total }}
+
+        </h2>
+
+    </section>
+
+    <!-- VEHICULOS -->
+    <section class="contenedor">
+
+        {% for vehiculo in vehiculos %}
+
+        <div class="card">
+
+            <h3>
+
+                <i class="fa-solid fa-car-side"></i>
+
+                {{ vehiculo._tipo_vehiculo }}
+
+            </h3>
+
+            <p>
+
+                <strong>Placa:</strong>
+
+                {{ vehiculo._placa }}
+
+            </p>
+
+            <p>
+
+                <strong>Categoría:</strong>
+
+                {{ vehiculo._categoria }}
+
+            </p>
+
+            <!-- SOLO CAMIONES -->
+            {% if vehiculo._tipo_vehiculo == "Camión"
+            or vehiculo._tipo_vehiculo == "Tractocamión" %}
+
+            <p>
+
+                <strong>Ejes:</strong>
+
+                {{ vehiculo._ejes }}
+
+            </p>
+
+            {% endif %}
+
+            <p>
+
+                <strong>Fecha:</strong>
+
+                {{ vehiculo._fecha }}
+
+            </p>
+
+            <p>
+
+                <strong>Hora:</strong>
+
+                {{ vehiculo._hora }}
+
+            </p>
+
+            <p>
+
+                <strong>Valor pagado:</strong>
+
+                ${{ vehiculo.calcular_tarifa() }}
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
 </body>
+
 </html>
